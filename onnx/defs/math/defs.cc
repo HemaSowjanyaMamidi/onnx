@@ -151,7 +151,7 @@ from the back. Accepted range is [-r, r-1] where r = rank(input).,
  
 static const char* Swish_ver13_doc = R"DOC(
 Sigmoid takes one input data (Tensor<T>) and produces one output data
-(Tensor<T>) where the swish function, is y=x*sigmoid(x) and where sigmoid(x) = 1 / (1 + exp(-x)).
+(Tensor<T>) where the swish function, is y=x/ (1 + exp(-x)).
 )DOC";
 
 ONNX_OPERATOR_SET_SCHEMA(
@@ -182,6 +182,14 @@ ONNX_OPERATOR_SET_SCHEMA(
              "tensor(double)",
              "tensor(bfloat16)"},
             "Constrain input and output types to float tensors.")
+          .FunctionBody(FunctionBodyHelper::BuildNodes(
+           {// nodes: {outputs, op, inputs, attributes}
+           FunctionBodyHelper::Const<int64>("one", 1),
+           FunctionBodyHelper::Const<float>("max", 6.0f),
+           FunctionBodyHelper::Const<float>("min", 0.0f),
+           {{"Sub_X"},"Sub", {"X"}},
+           {{"Add_O"},"Add", {"one","Sub_X"}},
+           {{"Y"}, "Div",{"X","Add_O"}}}))
         .TypeAndShapeInferenceFunction(propagateShapeAndTypeFromFirstInput));
   
 ONNX_OPERATOR_SET_SCHEMA(
