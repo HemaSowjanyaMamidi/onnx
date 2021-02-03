@@ -148,7 +148,42 @@ from the back. Accepted range is [-r, r-1] where r = rank(input).,
     });
   };
 }
+ 
+static const char* Swish_ver13_doc = R"DOC(
+Sigmoid takes one input data (Tensor<T>) and produces one output data
+(Tensor<T>) where the swish function, is y=x*sigmoid(x) and where sigmoid(x) = 1 / (1 + exp(-x)).
+)DOC";
 
+ONNX_OPERATOR_SET_SCHEMA(
+    Swish,
+    13,
+    OpSchema()
+        .SetDoc(Swish_ver13_doc)
+        .Input(0,
+            "X",
+            "Input tensor",
+            "T",
+            OpSchema::Single,
+            true,
+            1,
+            OpSchema::Differentiable)
+        .Output(0,
+            "Y",
+            "Output tensor",
+            "T",
+            OpSchema::Single,
+            true,
+            1,
+            OpSchema::Differentiable)
+        .TypeConstraint(
+            "T",
+            {"tensor(float16)",
+             "tensor(float)",
+             "tensor(double)",
+             "tensor(bfloat16)"},
+            "Constrain input and output types to float tensors.")
+        .TypeAndShapeInferenceFunction(propagateShapeAndTypeFromFirstInput));
+  
 ONNX_OPERATOR_SET_SCHEMA(
     Add,
     13,
