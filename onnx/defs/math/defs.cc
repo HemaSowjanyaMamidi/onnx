@@ -150,7 +150,8 @@ from the back. Accepted range is [-r, r-1] where r = rank(input).,
 }
  
 static const char* Swish_ver13_doc = R"DOC(
-Sigmoid takes one input data (Tensor<T>) and produces one output data
+Sigmoid takes 
+input data (Tensor<T>) and produces one output data
 (Tensor<T>) where the swish function, is y=x/ (1 + exp(-x)).
 )DOC";
 
@@ -184,7 +185,7 @@ ONNX_OPERATOR_SET_SCHEMA(
             "Constrain input and output types to float tensors.")
           .FunctionBody(FunctionBodyHelper::BuildNodes(
            {// nodes: {outputs, op, inputs, attributes}
-           FunctionBodyHelper::Const<int64>("one", 1),
+           FunctionBodyHelper::Const<float>("one", 1.0f),
            {{"Sub_X"},"Sub", {"X"}},
            {{"Add_O"},"Add", {"one","Sub_X"}},
            {{"Y"}, "Div",{"X","Add_O"}}}))
