@@ -185,8 +185,6 @@ ONNX_OPERATOR_SET_SCHEMA(
           .FunctionBody(FunctionBodyHelper::BuildNodes(
            {// nodes: {outputs, op, inputs, attributes}
            FunctionBodyHelper::Const<int64>("one", 1),
-           FunctionBodyHelper::Const<float>("max", 6.0f),
-           FunctionBodyHelper::Const<float>("min", 0.0f),
            {{"Sub_X"},"Sub", {"X"}},
            {{"Add_O"},"Add", {"one","Sub_X"}},
            {{"Y"}, "Div",{"X","Add_O"}}}))
