@@ -12,7 +12,7 @@ from ..base import Base
 from . import expect
 
 
-class Sigmoid(Base):
+class Swish(Base):
 
     @staticmethod
     def export():  # type: () -> None
@@ -25,9 +25,9 @@ class Sigmoid(Base):
         x = np.array([-1, 0, 1]).astype(np.float32)
         y = x * (1.0 / (1.0 + np.exp(np.negative(x))))  # expected output [-0.26894143, 0, 0.7310586]
         expect(node, inputs=[x], outputs=[y],
-               name='test_sigmoid_example')
+               name='test_swish_example')
 
         x = np.random.randn(3, 4, 5).astype(np.float32)
         y = x * (1.0 / (1.0 + np.exp(np.negative(x))))
         expect(node, inputs=[x], outputs=[y],
-               name='test_sigmoid')
+               name='test_swish')
